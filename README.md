@@ -1,5 +1,9 @@
 # dsh-feishu-contact
 
+[![npm](https://img.shields.io/npm/v/dsh-feishu-contact.svg)](https://www.npmjs.com/package/dsh-feishu-contact)
+[![CI](https://github.com/levelio/dsh-feishu-contact/actions/workflows/ci.yml/badge.svg)](https://github.com/levelio/dsh-feishu-contact/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/dsh-feishu-contact.svg)](LICENSE)
+
 DeepSeek Harness 插件：在输入框里用 `@` 提及飞书联系人和群聊，模型可以读对应会话、以你的身份回消息。
 
 - `@` 菜单多一段「飞书」：最近 / 联系人 / 群组，支持**拼音与首字母**（`zs`、`zhangsan` 都能找到张三）
@@ -32,25 +36,49 @@ DeepSeek Harness 插件：在输入框里用 `@` 提及飞书联系人和群聊�
 
 ## 2. 安装
 
+包已发布到 npm：[`dsh-feishu-contact`](https://www.npmjs.com/package/dsh-feishu-contact)。
+
+### 桌面 App（最常见）
+
+1. 侧边栏 → **插件**
+2. 点 **添加插件**（或右侧箭头 → **安装第三方插件**）
+3. 输入包名 `dsh-feishu-contact`，按 **安装**
+4. 装完点 **立即启用**，或回到插件列表把开关打开
+
+安装源默认自动选择 npm 官方源或国内镜像，失败可以手动切换。也支持 Git 地址、本地绝对路径和 tarball 链接。
+
+### 命令行 / 自建 Web 实例
+
 ```bash
-dsh plugin --profile <profile> add dsh-feishu-contact
+dsh plugin add dsh-feishu-contact            # 默认 profile
+dsh plugin --profile <name> add dsh-feishu-contact
 ```
 
-Desktop 的 profile 由 App 托管（CLI 会拒绝），走侧边栏 **Plugins → Add plugin**，填包名或本地绝对路径。
+安装后重启该实例。注意桌面 App 的 profile 由 App 托管，CLI 会拒绝写入，只能用上面的界面安装。
 
-host 半改动需要重启 App；client 半会热更新。
+### 版本要求
+
+- DeepSeek Harness ≥ 0.2.1-rc.2（peer dependency）
+- Node.js ≥ 22
+
+### 升级
+
+非官方插件没有独立的「更新」按钮：先在插件页**卸载**，再用新版本号重新安装。
+
+```bash
+dsh plugin add dsh-feishu-contact@0.1.1
+```
 
 ## 3. 授权
 
-**设置 → 插件 → 飞书联系人**，在「应用配置」里填 `App ID` / `App Secret` 并保存，再点「授权」：
+1. 插件页点开**飞书联系人**卡片
+2. 在「应用配置」填 **App ID** / **App Secret**，点 **保存**（写入 `~/.dsh/feishu-contact/settings.json`，0600，即时生效，不重启）
+3. 点 **授权**，浏览器打开飞书授权页并同意
+4. 回调 `http://localhost:3000/callback` 后自动保存 token，卡片状态变绿
 
-> 配置面板通过 `configForms` 写进 profile 配置；若该服务不可用，插件会落到自己的 `credentials.json`（0600，与 state 同目录），重启后依然有效。
+已保存的 App Secret 只显示 `abc*******` 形式；不重新输入就不会覆盖。
 
-1. 浏览器打开飞书授权页，点「同意」
-2. 回调到 `http://localhost:3000/callback`，插件自动保存 token（`~/.dsh/feishu-contact/user-token.json`，0600）
-3. 面板变绿，之后每 10 分钟检查、到期前自动刷新
-
-点「测试连接」会拉一次真实群列表，回显「N 个群 / M 位联系人」。
+点 **测试连接** 会拉一次真实数据，回显「N 个群 / M 位联系人」。
 
 ## 使用
 
