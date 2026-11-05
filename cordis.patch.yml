@@ -1,0 +1,10 @@
+# dsh-feishu-contact bundle patch: insert the host half as one cordis row.
+# The package's dsh.bundle.patch points here; the row's host half
+# (lib/host/index.js) loads as a plain cordis plugin, and the dsh.client
+# metadata composes the browser half (lib/client.js).
+#
+# No `config:` on purpose: every field has a Schema default, and an empty row
+# leaves nothing for a user-patch override to replace wholesale.
+- insert:
+    - id: feishu-contact
+      name: 'dsh-feishu-contact'
