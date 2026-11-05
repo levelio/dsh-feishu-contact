@@ -70,8 +70,14 @@ YAML
     mkdir -p "$STATE"
     pkill -f "profile $PROFILE" 2>/dev/null || true
     sleep 1
-    ( cd "$PROFILE_DIR" && setsid nohup dsh --profile "$PROFILE" --port "$PORT" --no-open \
-        < /dev/null > "$STATE/instance.log" 2>&1 & )
+    # Portable detach: setsid does not exist on macOS, and a fully redirected
+    # nohup keeps the caller's pipeline from waiting on the child.
+    (
+      cd "$PROFILE_DIR" || exit 1
+      nohup dsh --profile "$PROFILE" --port "$PORT" --no-open \
+        < /dev/null > "$STATE/instance.log" 2>&1 &
+      disown 2>/dev/null || true
+    )
 
     for _ in $(seq 1 40); do
       if grep -q "token=" "$STATE/instance.log" 2>/dev/null; then break; fi
