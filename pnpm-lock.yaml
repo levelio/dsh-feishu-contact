@@ -11,9 +11,6 @@ importers:
       '@deepseek-ai/dsh-typert-protocol':
         specifier: '>=0.2.1-rc.2'
         version: 0.2.1-rc.5(@deepseek-ai/cordis@4.1.0)
-      '@deepseek-ai/schemastery':
-        specifier: '>=3.18.4'
-        version: 3.18.5
     devDependencies:
       '@deepseek-ai/cordis':
         specifier: ^4.0.5
@@ -21,6 +18,9 @@ importers:
       '@deepseek-ai/dsh-tools':
         specifier: ^0.2.1-rc.5
         version: 0.2.1-rc.5(16852a7dac5cf0f2267aa6fd9d3c15fb)
+      '@deepseek-ai/schemastery':
+        specifier: ^3.18.4
+        version: 3.18.5
       '@types/node':
         specifier: 22.20.5
         version: 22.20.5
@@ -505,7 +505,7 @@ snapshots:
     dependencies:
       '@deepseek-ai/cordis': 4.1.0
       '@deepseek-ai/dsh-brand': 0.2.1-rc.5(@deepseek-ai/cordis@4.1.0)
-      zod: 4.4.3
+      zod: 4.6.7
 
   '@deepseek-ai/dsh-user-approval@0.2.1-rc.5(9f54df91a92d07f95212aadc4b53ee4f)':
     dependencies:
