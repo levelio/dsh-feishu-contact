@@ -154,10 +154,27 @@ dsh plugin add dsh-feishu-contact@0.1.1
 ## 开发
 
 ```bash
-npm install
-node build.mjs        # tsc → lib/host，esbuild → lib/client.js，并把 pinyin-pro 内联进 lib/host/pinyin.js
-node --test "test/*.test.mjs"
+pnpm install          # 必须以 link: 方式安装时也需要，见下方「依赖解析」
+pnpm build            # tsc → lib/host，esbuild → lib/client.js，并把 pinyin-pro 内联进 lib/host/pinyin.js
+pnpm test
 ```
+
+### 依赖解析（`link:` 安装必读）
+
+`@deepseek-ai/*` 依赖在两种安装方式下来源不同：
+
+| 安装方式 | 谁提供 `@deepseek-ai/*` |
+|---|---|
+| 从 npm 装（profile 的 `node_modules`） | DSH 加载器解析 |
+| `link:` 到本地仓库 | **仓库自己的 `node_modules`** |
+
+所以用 `link:` 方式开发时，`@deepseek-ai/schemastery`、`@deepseek-ai/cordis`、`@deepseek-ai/dsh-tools`、`@deepseek-ai/dsh-typert-protocol` 必须作为 devDependencies 装进仓库，否则启动会报：
+
+```
+failed to import: Cannot find package '@deepseek-ai/schemastery'
+```
+
+它们是 devDependencies 而不是 dependencies，是为了让 npm 包本身不带这些运行时（由 DSH 提供）。
 
 host 不打包（逐文件 ESM，堆栈可读），client 打包成 `window.__ModuleLoader__.load({ id, factory })` 形态。
 
